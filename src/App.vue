@@ -1,13 +1,18 @@
 <template>
   <header>
-    <h1 class="text-3xl font-bold underline">
-      Hello world!
+    <h1>
+      TC's Gamer Guides 101
     </h1>
   </header>
 
   <main>
-  <h1>main</h1>
+  
   </main>
+
+  <footer>
+    <p>&copy; 2018 TranquilityCea LLC</p>
+    <p>All relevant trademarks and media are the property of and subject to copyright laws of their respective owners.</p>
+  </footer>
 </template>
 
 <script setup>
