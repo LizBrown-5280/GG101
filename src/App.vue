@@ -1,12 +1,6 @@
 <template>
-  <header>
-    <h1>
-      TC's Gamer Guides 101
-    </h1>
-  </header>
-
   <main>
-  
+    <AccountStats></AccountStats>
   </main>
 
   <footer>
@@ -16,33 +10,23 @@
 </template>
 
 <script setup>
+import AccountStats from '../views/AccountStats.vue';
 </script>
 
 <style scoped>
-header {
-  line-height: 1.5;
+main {
+  width: 100%;
+  height: 100vh;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 
 @media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
 
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
 }
 </style>

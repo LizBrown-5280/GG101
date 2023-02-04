@@ -1,9 +1,11 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   // content: [ './index.html', './src/**/*.{vue,js,ts,jsx,tsx}', ],
-  purge: [ './index.html', './src/**/*.{vue,js,ts,jsx,tsx}', ],
-  darkMode: false, // or 'media' or 'class'
+  content: [ './index.html', './src/**/*.{vue,js,ts,jsx,tsx}', ],
+  darkMode: 'media', // or 'class'
   theme: {
+    colors: {},
+    fontFamily: {},
     extend: {},
   },
   variants: {
