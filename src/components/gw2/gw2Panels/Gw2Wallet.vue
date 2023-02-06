@@ -7,7 +7,7 @@
     </div>
 
     <div class="gems">
-      <button>Gems used in Black Lions Trading Post</button>
+      <button>Gems used in Black Lions Trading Post (1)</button>
       <div class="row">
         <Gw2Card v-if="gems[0]?.id" :currency="gems[0]" />
 
@@ -51,7 +51,7 @@
   import Gw2Card from './Gw2Card.vue'
 
   const Gw2Store = useGW2Store()
-  const Gw2WalletStore = useGw2WalletDemoData()
+  const demoDataStore = useGw2WalletDemoData()
   const { getApiKey } = storeToRefs(Gw2Store)
   
   const currencies = reactive([])
@@ -59,10 +59,9 @@
   const gems = reactive([])
   const currencyCount = ref(null)
   const permissionsRestricted = ref(false)
-  const endpointUrl = '/v2/account/walletData'
+  const endpointUrl = '/v2/account/wallet'
   const qParam = '?access_token='
   let key = ''
-  let apiUrl = `${endpointUrl}${qParam}${key}`
 
   onMounted (async () => {
     let payload = await useAxiosGet('/v2/currencies?ids=all')
@@ -80,43 +79,38 @@
     }
   })
 
-  watch(getApiKey, (newApiKey) => {
-    if (newApiKey) {
+  watch(getApiKey, (newApiKey) => newApiKey && getAcctData(newApiKey) || clearAmounts())
 
-      getAcctCurrencies(newApiKey)
-    } else clearAmounts()
-  })
-
-  async function getAcctCurrencies(key) {
+  async function getAcctData(key) {
     permissionsRestricted.value = false
 
     if (key === 'Some User API Key :)') {
-      const walletDemoData = JSON.parse(JSON.stringify( Gw2WalletStore.getWalletDemoData ))
-      matchAccountValues(walletDemoData)
-    } else {
-      const payload = await useAxiosGet(`${endpointUrl}${qParam}${key}`)
-      if (payload.connectionSucceeded) matchAccountValues(payload)
-      else {
-        if (payload.error.code === 403) permissionsRestricted.value = true
-        clearAmounts(payload.error.code)
-      }
+      const demoData = JSON.parse(JSON.stringify( demoDataStore.getWalletDemoData ))
+      matchAccountValues(demoData)
+      return
+    } 
+    
+    const url = `${endpointUrl}${qParam}${key}`
+    const payload = await useAxiosGet(url)
+    if (payload.connectionSucceeded) matchAccountValues(payload)
+    else if (payload.error.code === 403) {
+      permissionsRestricted.value = true
+      clearAmounts(payload.error.code)
     }
   }
 
-function matchAccountValues(walletData) {
-    let itemCount = walletData.data.length
+  function matchAccountValues(data) {
+    currencyCount.value = (data.data.length - 1) + ' / '
 
     currencies.forEach(currency => { 
-      if (currency.id === walletData.data[0]?.id) {
-        currency.amount = walletData.data[0].value.toLocaleString()
-        walletData.data.shift()
+      if (currency.id === data.data[0]?.id) {
+        currency.amount = data.data[0].value.toLocaleString()
+        data.data.shift()
       }
       else currency.amount = '0'
     })
 
     currencies[0].coins = coinsExch(currencies[0].amount)
-    itemCount--
-    currencyCount.value = itemCount + ' / '
   }
 
   function clearAmounts(errCode) { 

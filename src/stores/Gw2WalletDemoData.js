@@ -126,6 +126,6 @@ export const useGw2WalletDemoData = defineStore('Gw2WalletDemoData', {
   }),
 
   getters: {
-    getWalletDemoData: state => state.wallet,
+    getDemoData: state => state.wallet,
   },
 })
