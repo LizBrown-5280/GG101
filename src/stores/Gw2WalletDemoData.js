@@ -11,7 +11,7 @@ export const useGw2WalletDemoData = defineStore('Gw2WalletDemoData', {
         },
         {
           id: 2,
-          value: 1394347
+          value: 555555
         },
         {
           id: 3,
@@ -19,7 +19,7 @@ export const useGw2WalletDemoData = defineStore('Gw2WalletDemoData', {
         },
         {
           id: 4,
-          value: 1000
+          value: 8888
         },
         {
           id: 7,

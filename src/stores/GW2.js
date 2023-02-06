@@ -9,13 +9,13 @@ export const useGW2Store = defineStore('GW2Store', {
 
     tabNav: {
       account: {},
-      builds: {},
+      // builds: {},
       characters: {},
-      guilds: {},
+      // guilds: {},
       inventories: {},
-      tradingpost: {},
+      // tradingpost: {},
       progression: {},
-      pvp: {},
+      // pvp: {},
       unlocks: {},
       wallet: {}
     },
