@@ -7,7 +7,7 @@
 
 <style scoped>
 header {
-  z-index: 10;
+  z-index: 15;
   position: fixed;
   left: 0px;
   right: 0px;

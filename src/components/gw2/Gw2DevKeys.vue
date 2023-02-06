@@ -11,8 +11,6 @@
     <label for="aw">AW</label>
     <input type="radio" id="badKey" :value="badKey" v-model="picked" @change="$emit('handleKeyChange', $event, true)" />
     <label for="badKey">Bad Key</label>
-    <input type="radio" id="clear" value="" v-model="picked" @change="$emit('handleKeyChange', $event, true)" />
-    <label for="clear">Clear</label>
   </div>
 </template>
 

@@ -1,5 +1,11 @@
 <template>
   <div id="wallet">
+    <div v-if="permissionsRestricted" class="permissionsRestricted">
+      Permissions were not granted to access your Wallet with the key provided.
+      <br />
+      To see more, use a Permissions Key that includes access to your Wallet.
+    </div>
+
     <div class="gems">
       <button>Gems used in Black Lions Trading Post</button>
       <div class="row">
@@ -52,6 +58,7 @@
   const currenciesByOrder = reactive([])
   const gems = reactive([])
   const currencyCount = ref(null)
+  const permissionsRestricted = ref(false)
   
 
   onMounted (async () => {
@@ -73,6 +80,7 @@
   watch(getApiKey, (newApiKey) => newApiKey && getAcctCurrencies(newApiKey) || clearAmounts())
 
 async function getAcctCurrencies(key) {
+    permissionsRestricted.value = false
 
     if (key === 'Some User API Key :)') {
       const walletDemoData = JSON.parse(JSON.stringify( Gw2WalletStore.getWalletDemoData ))
@@ -80,7 +88,10 @@ async function getAcctCurrencies(key) {
     } else {
       const payload = await useAxiosGet('/v2/account/wallet?access_token=' + key)
       if (payload.connectionSucceeded) matchAccountValues(payload)
-      else clearAmounts()
+      else {
+        if (payload.error.code === 403) permissionsRestricted.value = true
+        clearAmounts(payload.error.code)
+      }
     }
   }
 
@@ -100,12 +111,13 @@ function matchAccountValues(walletData) {
     currencyCount.value = itemCount + ' / '
   }
 
-  function clearAmounts() { 
+  function clearAmounts(errCode) { 
     currencies.forEach(currancy => currancy.amount = null)
     currencies[0].coins.copperCoins = null
     currencies[0].coins.silverCoins = null
     currencies[0].coins.goldCoins = null
     currencyCount.value = ''
+    if (errCode !== 403) permissionsRestricted.value = false
   }
 
 function sortCurrenciesByOrder() {
@@ -118,13 +130,15 @@ function sortCurrenciesByOrder() {
 #wallet {
     width: 600px;
     margin: 0 auto;
-    padding-bottom: 50px;
   }
 
   #wallet > div {
     margin-bottom: 40px;
   }
-
+  
+  .permissionsRestricted {
+    color: var(--color-text-primary3)
+  }
   .row {
     position: relative;
     display: block;
