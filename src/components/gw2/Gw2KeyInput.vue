@@ -10,43 +10,67 @@
     <span v-if="errorMsg" class="errorMsg">{{ errorMsg }}</span>
   </div>
 
-  <Gw2Button class="clearKey" @click="handleKeyChange" value="clearKey" label="Clear key">Clear key</Gw2Button>
+  <Gw2Button 
+    class="clearKey" value="clearKey" ref="clrBtn" label="Clear key"    
+    @click="handleClearingData">
+    Clear key
+  </Gw2Button>
 
-  <Gw2Button class="demoKey" @click="handleKeyChange" value="demoKey" label="Use Demo Key"  
-    title="Due to security concerns, the demo version does not make real API calls, it only uses stored data.">
+  <Gw2Button 
+    class="demoKey" :class="{ active: isDemoBtnActive}" label="Use Demo Key"  
+    title="Due to security concerns, the demo version does not make real API calls, it only uses stored data."
+    @click="toggleDemo">
     Use Demo Key
   </Gw2Button>
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useGW2Store } from '@/stores/GW2'
-import Gw2Button from './Gw2Button.vue'
-import Gw2DevKeys from './Gw2DevKeys.vue'
-const useDevKeys = import.meta.env.VITE_DEV_KEYS
-const GW2Store = useGW2Store()
-const userApiKey = ref('')
-const errorMsg = GW2Store.getKeyErrorMgs
-const useUpdateStoreApiKey = GW2Store.updateUserApiKey
-const isLabelInset = ref(true)
+  import { ref } from 'vue'
+  import { useGW2Store } from '@/stores/GW2'
+  import Gw2Button from './Gw2Button.vue'
+  import Gw2DevKeys from './Gw2DevKeys.vue'
+  const useDevKeys = import.meta.env.VITE_DEV_KEYS
+  const GW2Store = useGW2Store()
+  const userApiKey = ref('')
+  const errorMsg = GW2Store.getKeyErrorMgs
+  const useUpdateStoreApiKey = GW2Store.updateUserApiKey
+  const isLabelInset = ref(true)
+  const isDemoBtnActive = ref(false)
+  const clrBtn = ref(null)
 
-/**
- * This manually sets the 'userApiKey' value if a button like 'Clear Key', 'Demo Key', or a Dev Key is used.
- * It also uses an action to update the store with the new api key value.
- * And adjustes the input label as needed.
- * @param { event } e - event
- * @param { string } updateUserApiKey - if supplied, tells to update the 'userApiKey' value manually from Gw2DevKeys,
- *                                       otherwise the key is supplied via the input.
- */
-function handleKeyChange(e, updateUserApiKey) {
-  if (updateUserApiKey) userApiKey.value = e.target.value
-  else if (e.target.value === 'clearKey') userApiKey.value = ''
-  else if (e.target.value === 'demoKey') userApiKey.value = 'Some User API Key :)'
+  function handleKeyChange(e, updateUserApiKey) {
+    isDemoBtnActive.value = false
+    if (updateUserApiKey) userApiKey.value = e.target.value
+    isLabelInset.value = userApiKey.value ? false : true
+    useUpdateStoreApiKey(userApiKey.value)
+  }
 
-  isLabelInset.value = userApiKey.value ? false : true
-  useUpdateStoreApiKey(userApiKey.value)
-}
+  function toggleDemo() {
+    isDemoBtnActive.value = !isDemoBtnActive.value
 
+    if (isDemoBtnActive.value) {
+      userApiKey.value = 'Some User API Key :)'
+      updateLabel()
+      updateStore() 
+    } else { 
+      handleClearingData()
+    }
+  }
+
+  function handleClearingData() {
+    isDemoBtnActive.value = false
+    userApiKey.value = ''
+    updateLabel()
+    updateStore()
+  }
+
+  function updateLabel() {
+    isLabelInset.value = userApiKey.value ? false : true
+  }
+
+  function updateStore() {
+    useUpdateStoreApiKey(userApiKey.value)
+  }
 </script>
 
 <style scoped>
