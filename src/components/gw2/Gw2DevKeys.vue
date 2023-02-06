@@ -1,12 +1,18 @@
 <template>
   <div class="devKeys">
-    <p>Api Key:</p>
+    <p>Api Key choices:</p>
     <input type="radio" id="all" :value="allKey" v-model="picked" @change="$emit('handleKeyChange', $event, true)" />
     <label for="all">All</label>
     <input type="radio" id="ai" :value="aiKey" v-model="picked" @change="$emit('handleKeyChange', $event, true)" />
     <label for="ai">AI</label>
     <input type="radio" id="aiuw" :value="aiuwKey" v-model="picked" @change="$emit('handleKeyChange', $event, true)" />
     <label for="aiuw">AIUW</label>
+    <input type="radio" id="aw" :value="awKey" v-model="picked" @change="$emit('handleKeyChange', $event, true)" />
+    <label for="aw">AW</label>
+    <input type="radio" id="badKey" :value="badKey" v-model="picked" @change="$emit('handleKeyChange', $event, true)" />
+    <label for="badKey">Bad Key</label>
+    <input type="radio" id="clear" value="" v-model="picked" @change="$emit('handleKeyChange', $event, true)" />
+    <label for="clear">Clear</label>
   </div>
 </template>
 
@@ -25,6 +31,8 @@ import { ref } from 'vue'
 const allKey = import.meta.env.VITE_ALL_API_KEY
 const aiKey = import.meta.env.VITE_AI_API_KEY
 const aiuwKey = import.meta.env.VITE_AIUW_API_KEY
+const awKey = import.meta.env.VITE_AW_API_KEY
+const badKey = import.meta.env.VITE_BAD_API_KEY
 const picked = ref('')
 </script>
 
