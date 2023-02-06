@@ -14,7 +14,7 @@
     </div>
 
     <div class="currencies">
-      <button>Currencies used in the game ({{ currencyCount}} / {{ currencies.length }}):</button>
+      <button>Currencies used in the game ({{ currencyCount}}{{ currencies.length }}):</button>
       <div class="row" v-for="currency in currenciesByOrder" :key="currency.id">
         <Gw2Card :currency="currency" />
 
@@ -39,16 +39,19 @@
   import { ref, reactive, onMounted, watch } from 'vue'
   import { storeToRefs } from 'pinia'
   import { useGW2Store } from '../../../stores/GW2'
+  import { useGw2WalletDemoData} from '../../../stores/GW2WalletDemoData'
   import { useAxiosGet } from '@/composables/useAxiosGet'
   import { coinsExch } from '@/utils/utils.js'
   import Gw2Card from './Gw2Card.vue'
 
   const Gw2Store = useGW2Store()
+  const Gw2WalletStore = useGw2WalletDemoData()
   const { getApiKey } = storeToRefs(Gw2Store)
+  
   const currencies = reactive([])
   const currenciesByOrder = reactive([])
   const gems = reactive([])
-  const currencyCount = ref(0)
+  const currencyCount = ref(null)
   
 
   onMounted (async () => {
@@ -69,44 +72,32 @@
 
   watch(getApiKey, (newApiKey) => newApiKey && getAcctCurrencies(newApiKey) || clearAmounts())
 
-  async function getAcctCurrencies(key) {
-    let payload = await useAxiosGet('/v2/account/wallet?access_token=' + key)
-    console.log('key', key)
-    console.log('payload', payload)
+async function getAcctCurrencies(key) {
 
-    if (payload.connectionSucceeded) matchAccountValues(payload)
-    else clearAmounts()
-
-
-
-    // console.log('key', key)
-
-    // let payload
-
-    // if (key === 'Some User API Key :)') {
-    //   console.log('payload will equal demo data')
-    // } else {
-    //   await useAxiosGet('/v2/account/wallet?access_token=' + key)
-    //   if (payload?.connectionSucceeded) matchAccountValues(payload)
-    //   else clearAmounts()
-
-    //   console.log(payload)
-    // }
+    if (key === 'Some User API Key :)') {
+      const walletDemoData = JSON.parse(JSON.stringify( Gw2WalletStore.getWalletDemoData ))
+      matchAccountValues(walletDemoData)
+    } else {
+      const payload = await useAxiosGet('/v2/account/wallet?access_token=' + key)
+      if (payload.connectionSucceeded) matchAccountValues(payload)
+      else clearAmounts()
+    }
   }
 
-  function matchAccountValues(payload) {
-    currencyCount.value = payload.data.length
+function matchAccountValues(walletData) {
+    let itemCount = walletData.data.length
 
     currencies.forEach(currency => { 
-      if (currency.id === payload.data[0]?.id) {
-        currency.amount = payload.data[0].value.toLocaleString()
-        payload.data.shift()
+      if (currency.id === walletData.data[0]?.id) {
+        currency.amount = walletData.data[0].value.toLocaleString()
+        walletData.data.shift()
       }
       else currency.amount = '0'
     })
 
     currencies[0].coins = coinsExch(currencies[0].amount)
-    currencyCount.value --
+    itemCount--
+    currencyCount.value = itemCount + ' / '
   }
 
   function clearAmounts() { 
@@ -114,6 +105,7 @@
     currencies[0].coins.copperCoins = null
     currencies[0].coins.silverCoins = null
     currencies[0].coins.goldCoins = null
+    currencyCount.value = ''
   }
 
 function sortCurrenciesByOrder() {
