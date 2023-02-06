@@ -47,6 +47,8 @@
   --scrollbar-background: var(--base-dark-blue);
 
   --section-gap: 160px;
+  --vertical-padding: 5px;
+  --horizontal-padding: 10px;
 }
 
 a,
