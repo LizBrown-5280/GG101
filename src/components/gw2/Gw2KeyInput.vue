@@ -1,7 +1,7 @@
 <template>
   <Gw2DevKeys v-if="useDevKeys" @handle-key-change="handleKeyChange"/>
 
-  <div class="apiKeyInput"  >
+  <div class="apiKeyInput">
     <label :class="{ inset: isLabelInset }" for="userApiKey">To see more, enter your ArenaNet GW2 API key here...</label>
 
     <input name="userApiKey" type="string" v-model.trim="userApiKey" @focus="isLabelInset = false"
@@ -9,8 +9,10 @@
     
     <span v-if="errorMsg" class="errorMsg">{{ errorMsg }}</span>
   </div>
-  <Gw2Button class="clearKey" @click="handleKeyChange" value="clearKey">Clear Key</Gw2Button>
-  <Gw2Button class="demo" @click="handleKeyChange" value="demoKey" 
+
+  <Gw2Button class="clearKey" @click="handleKeyChange" value="clearKey" label="Clear key">Clear key</Gw2Button>
+
+  <Gw2Button class="demoKey" @click="handleKeyChange" value="demoKey" label="Use Demo Key"  
     title="Due to security concerns, the demo version does not make real API calls, it only uses stored data.">
     Use Demo Key
   </Gw2Button>
@@ -30,7 +32,7 @@ const isLabelInset = ref(true)
 
 /**
  * This manually sets the 'userApiKey' value if a button like 'Clear Key', 'Demo Key', or a Dev Key is used.
- * It also uses an action to update the store with the new value.
+ * It also uses an action to update the store with the new api key value.
  * And adjustes the input label as needed.
  * @param { event } e - event
  * @param { string } updateUserApiKey - if supplied, tells to update the 'userApiKey' value manually from Gw2DevKeys,
