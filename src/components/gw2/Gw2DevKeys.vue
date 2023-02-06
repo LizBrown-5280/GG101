@@ -39,7 +39,7 @@ const picked = ref('')
 <style scoped>
 .devKeys {
   display: flex;
-  margin: 20px 0 -15px;
+  margin: 20px 0 -5px;
 }
 
 input {

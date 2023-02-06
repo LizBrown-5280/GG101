@@ -12,4 +12,12 @@
 import Gw2KeyInput from './Gw2KeyInput.vue'
 </script>
 
-<style scoped></style>
+<style scoped>
+  a {
+    color: var(--color-text-primary3)
+  }
+
+  a:hover {
+    border-bottom: 1px solid var(--color-util-primary3);
+  }
+</style>

@@ -9,24 +9,40 @@
     
     <span v-if="errorMsg" class="errorMsg">{{ errorMsg }}</span>
   </div>
+  <Gw2Button class="clearKey" @click="handleKeyChange" value="clearKey">Clear Key</Gw2Button>
+  <Gw2Button class="demo" @click="handleKeyChange" value="demoKey" 
+    title="Due to security concerns, the demo version does not make real API calls, it only uses stored data.">
+    Use Demo Key
+  </Gw2Button>
 </template>
 
 <script setup>
 import { ref } from 'vue'
 import { useGW2Store } from '@/stores/GW2'
+import Gw2Button from './Gw2Button.vue'
 import Gw2DevKeys from './Gw2DevKeys.vue'
 const useDevKeys = import.meta.env.VITE_DEV_KEYS
 const GW2Store = useGW2Store()
 const userApiKey = ref('')
 const errorMsg = GW2Store.getKeyErrorMgs
-const updateKey = GW2Store.updateUserApiKey
+const useUpdateStoreApiKey = GW2Store.updateUserApiKey
 const isLabelInset = ref(true)
 
+/**
+ * This manually sets the 'userApiKey' value if a button like 'Clear Key', 'Demo Key', or a Dev Key is used.
+ * It also uses an action to update the store with the new value.
+ * And adjustes the input label as needed.
+ * @param { event } e - event
+ * @param { string } updateUserApiKey - if supplied, tells to update the 'userApiKey' value manually from Gw2DevKeys,
+ *                                       otherwise the key is supplied via the input.
+ */
 function handleKeyChange(e, updateUserApiKey) {
-  // only updating userApiKey if value is coming from child component, otherise v-modal is used as normal here
-  if(updateUserApiKey) userApiKey.value = e.target.value
-  updateKey(userApiKey.value)
-  isLabelInset.value = false
+  if (updateUserApiKey) userApiKey.value = e.target.value
+  else if (e.target.value === 'clearKey') userApiKey.value = ''
+  else if (e.target.value === 'demoKey') userApiKey.value = 'Some User API Key :)'
+
+  isLabelInset.value = userApiKey.value ? false : true
+  useUpdateStoreApiKey(userApiKey.value)
 }
 
 </script>
@@ -34,9 +50,10 @@ function handleKeyChange(e, updateUserApiKey) {
 <style scoped>
 .apiKeyInput {
   position: relative;
+  display: inline-block;
   height: 70px;
   margin: 10px 0;
-  padding-top: 20px;
+  padding: 20px 10px 0 0;
 }
 
 
@@ -66,7 +83,7 @@ input {
   padding: 3px 10px;
   background: transparent;
   border: 1px solid var(--color-util-primary2);
-  border-radius: 6px;
+  border-radius: 5px;
   color: var(--color-text-primary3);
   font-size: 0.8rem;
 }
