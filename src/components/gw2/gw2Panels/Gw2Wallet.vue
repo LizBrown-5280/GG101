@@ -44,8 +44,8 @@
 <script setup>
   import { ref, reactive, onMounted, watch } from 'vue'
   import { storeToRefs } from 'pinia'
-  import { useGW2Store } from '../../../stores/GW2'
-  import { useGw2WalletDemoData} from '../../../stores/GW2WalletDemoData'
+  import { useGW2Store } from '@/stores/GW2'
+  import { useGw2WalletDemoData} from '@/stores/GW2WalletDemoData'
   import { useAxiosGet } from '@/composables/useAxiosGet'
   import { coinsExch } from '@/utils/utils.js'
   import Gw2Card from './Gw2Card.vue'
@@ -59,7 +59,10 @@
   const gems = reactive([])
   const currencyCount = ref(null)
   const permissionsRestricted = ref(false)
-  
+  const endpointUrl = '/v2/account/walletData'
+  const qParam = '?access_token='
+  let key = ''
+  let apiUrl = `${endpointUrl}${qParam}${key}`
 
   onMounted (async () => {
     let payload = await useAxiosGet('/v2/currencies?ids=all')
@@ -77,16 +80,21 @@
     }
   })
 
-  watch(getApiKey, (newApiKey) => newApiKey && getAcctCurrencies(newApiKey) || clearAmounts())
+  watch(getApiKey, (newApiKey) => {
+    if (newApiKey) {
 
-async function getAcctCurrencies(key) {
+      getAcctCurrencies(newApiKey)
+    } else clearAmounts()
+  })
+
+  async function getAcctCurrencies(key) {
     permissionsRestricted.value = false
 
     if (key === 'Some User API Key :)') {
       const walletDemoData = JSON.parse(JSON.stringify( Gw2WalletStore.getWalletDemoData ))
       matchAccountValues(walletDemoData)
     } else {
-      const payload = await useAxiosGet('/v2/account/wallet?access_token=' + key)
+      const payload = await useAxiosGet(`${endpointUrl}${qParam}${key}`)
       if (payload.connectionSucceeded) matchAccountValues(payload)
       else {
         if (payload.error.code === 403) permissionsRestricted.value = true
