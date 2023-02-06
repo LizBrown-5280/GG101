@@ -18,9 +18,14 @@ export function useAxiosGet (endPointUrl, storeAs) {
       // if (payload.hasOwnProperty('storeAs')) {
       return payload
     })
-    .catch(e => {
+    .catch(err => {
+      const e = err.toJSON()
       payload.connectionSucceeded = false
-      payload.data = [String(e)]
+      payload.error = {
+        message: e.message,
+        code: e.status,
+      }
+
       return payload
     })
 }
