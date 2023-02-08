@@ -12,6 +12,7 @@
   --base-mid-blue: rgb(33, 50, 65);
   --base-dark-blue: rgb(3, 22, 38);
   --primary-brown-opacity90: rgba(56, 36, 15, 0.9);
+  --error-red-med: #ff6767
 }
 
 /* semantic color variables for this project */
@@ -23,6 +24,7 @@
   --color-text-secondary2: var(--base-mid-blue);
   --color-text-secondary3: var(--secondary-light-grey);
   --color-text-white: var(--white);
+  --color-text-error2: var(--error-red-med);
 
   --color-background-primary1: var(--primary-brown);
   --color-background-primary2: var(--primary-green);

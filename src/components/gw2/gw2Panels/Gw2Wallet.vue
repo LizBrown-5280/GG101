@@ -21,7 +21,7 @@
 
     <div class="currencies">
       <button>Currencies used in the game ({{ currencyCount}}{{ currencies.length }}):</button>
-      <div class="row" v-for="currency in currenciesByOrder" :key="currency.id">
+      <div class="row" v-for="currency in currencies" :key="currency.id">
         <Gw2Card :currency="currency" />
 
         <div class="amount">
@@ -42,90 +42,41 @@
 </template>
 
 <script setup>
+  import Gw2Card from './Gw2Card.vue'
   import { ref, reactive, onMounted, watch } from 'vue'
   import { storeToRefs } from 'pinia'
   import { useGW2Store } from '@/stores/GW2'
-  import { useGw2WalletDemoData} from '@/stores/GW2WalletDemoData'
-  import { useAxiosGet } from '@/composables/useAxiosGet'
-  import { coinsExch } from '@/utils/utils.js'
-  import Gw2Card from './Gw2Card.vue'
+  import { useWalletStore } from '@/stores/useWalletStore'
 
   const Gw2Store = useGW2Store()
-  const demoDataStore = useGw2WalletDemoData()
-  const { getApiKey } = storeToRefs(Gw2Store)
-  
-  const currencies = reactive([])
-  const currenciesByOrder = reactive([])
-  const gems = reactive([])
+const currencies = reactive([])
   const currencyCount = ref(null)
+  const gems = reactive([])
+  const { getApiKey } = storeToRefs(Gw2Store)
   const permissionsRestricted = ref(false)
-  const endpointUrl = '/v2/account/wallet'
-  const qParam = '?access_token='
-  let key = ''
+  const store = useWalletStore()
 
-  onMounted (async () => {
-    let payload = await useAxiosGet('/v2/currencies?ids=all')
-    currencies.push(...payload.data)
-
-    currencies[0].coins = {
-      copperIcon: 'https://render.guildwars2.com/file/6CF8F96A3299CFC75D5CC90617C3C70331A1EF0E/156902.png',
-      silverIcon: 'https://render.guildwars2.com/file/E5A2197D78ECE4AE0349C8B3710D033D22DB0DA6/156907.png',
-      goldIcon: 'https://render.guildwars2.com/file/090A980A96D39FD36FBB004903644C6DBEFB1FFB/156904.png',
-    }
-
-    currenciesByOrder.push(...sortCurrenciesByOrder())
-    if (currenciesByOrder[0].name === 'Gem') {
-      gems.push(...currenciesByOrder.splice(0, 1))
-    }
+  onMounted(async () => {
+    // Open Data
+    if (store.getCurrencies.length === 0) await store.callApiOpenData('currencies')
+    // ! test for return payload.error here
+    currencies.push(...store.getCurrencies)
+    gems.push(...currencies.splice(0, 1))
   })
 
-  watch(getApiKey, (newApiKey) => newApiKey && getAcctData(newApiKey) || clearAmounts())
+  watch(getApiKey, (newApiKey) => newApiKey && getAcctData(newApiKey) || store.clearCurrenciesAmounts())
 
   async function getAcctData(key) {
     permissionsRestricted.value = false
 
-    if (key === 'Some User API Key :)') {
-      const demoData = JSON.parse(JSON.stringify( demoDataStore.getWalletDemoData ))
-      matchAccountValues(demoData)
+    // For Demo Data use only
+    if (key.includes('DEMO-KEY')) {
+      store.setupDemo()
       return
     } 
-    
-    const url = `${endpointUrl}${qParam}${key}`
-    const payload = await useAxiosGet(url)
-    if (payload.connectionSucceeded) matchAccountValues(payload)
-    else if (payload.error.code === 403) {
-      permissionsRestricted.value = true
-      clearAmounts(payload.error.code)
-    }
+
+    store.callApiAcctData(key)
   }
-
-  function matchAccountValues(data) {
-    currencyCount.value = (data.data.length - 1) + ' / '
-
-    currencies.forEach(currency => { 
-      if (currency.id === data.data[0]?.id) {
-        currency.amount = data.data[0].value.toLocaleString()
-        data.data.shift()
-      }
-      else currency.amount = '0'
-    })
-
-    currencies[0].coins = coinsExch(currencies[0].amount)
-  }
-
-  function clearAmounts(errCode) { 
-    currencies.forEach(currancy => currancy.amount = null)
-    currencies[0].coins.copperCoins = null
-    currencies[0].coins.silverCoins = null
-    currencies[0].coins.goldCoins = null
-    currencyCount.value = ''
-    if (errCode !== 403) permissionsRestricted.value = false
-  }
-
-function sortCurrenciesByOrder() {
-  return [...currencies].sort((a, b) => a.order - b.order)
-}
-
 </script>
 
 <style scoped>

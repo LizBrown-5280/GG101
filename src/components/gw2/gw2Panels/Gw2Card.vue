@@ -22,7 +22,6 @@
   const props = defineProps(['currency'])
   const currency = props.currency
   const id = currency.id
-  // console.log('currency', currency)
 </script>
 
 <style scoped>
