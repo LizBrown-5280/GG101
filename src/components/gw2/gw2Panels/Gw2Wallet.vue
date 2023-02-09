@@ -20,7 +20,7 @@
     </div>
 
     <div class="currencies">
-      <button>Currencies used in the game ({{ currencyCount}}{{ currencies.length }}):</button>
+      <button>Currencies used in the game ({{ numOwned }}{{ currencies.length }}):</button>
       <div class="row" v-for="currency in currencies" :key="currency.id">
         <Gw2Card :currency="currency" />
 
@@ -49,22 +49,27 @@
   import { useWalletStore } from '@/stores/useWalletStore'
 
   const Gw2Store = useGW2Store()
-const currencies = reactive([])
-  const currencyCount = ref(null)
+  const currencies = reactive([])
   const gems = reactive([])
   const { getApiKey } = storeToRefs(Gw2Store)
   const permissionsRestricted = ref(false)
   const store = useWalletStore()
+  const numOwned = ref(null)
 
   onMounted(async () => {
-    // Open Data
     if (store.getCurrencies.length === 0) await store.callApiOpenData('currencies')
     // ! test for return payload.error here
     currencies.push(...store.getCurrencies)
     gems.push(...currencies.splice(0, 1))
   })
 
-  watch(getApiKey, (newApiKey) => newApiKey && getAcctData(newApiKey) || store.clearCurrenciesAmounts())
+  watch(getApiKey, (newApiKey) => {
+    if (newApiKey) getAcctData(newApiKey)
+    else {
+      store.clearCurrenciesAmounts()
+      numOwned.value = null
+    }
+  })
 
   async function getAcctData(key) {
     permissionsRestricted.value = false
@@ -72,10 +77,12 @@ const currencies = reactive([])
     // For Demo Data use only
     if (key.includes('DEMO-KEY')) {
       store.setupDemo()
+      numOwned.value = store.getDemoLen
       return
-    } 
+    }
 
-    store.callApiAcctData(key)
+    await store.callApiAcctData(key)
+    numOwned.value = store.getAcctLen
   }
 </script>
 

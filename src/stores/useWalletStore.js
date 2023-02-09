@@ -148,7 +148,11 @@ export const useWalletStore = defineStore('walletData', {
 
   getters: {
     getCurrencies: state => [...state.openData.data].sort((a, b) => a.order - b.order),
-    getAcctLen: state => state.acct.data.length,
+    getAcctLen: state => {
+      if (state.acct.data.length > 0) return `${state.acct.data.length - 1} / `
+      return null
+    },
+    getDemoLen: state => `${state.acctDemo.data.length - 1} / `,
     getDemo: state => state.acctDemo.data,
   },
 
@@ -200,7 +204,7 @@ export const useWalletStore = defineStore('walletData', {
     },
 
     clearAcctData() {
-      this.acct.data = []
+      this.acct.data.length = 0
     }
   },
 })
@@ -214,6 +218,8 @@ function matchAcctAmts(currencies, acctData) {
     }
     else currency.amount = '0'
   })
+
+  currencies[0].coins = coinsExch(currencies[0].amount)
 
   return currencies
 }
