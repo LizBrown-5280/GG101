@@ -8,19 +8,16 @@ export const useWalletStore = defineStore('walletData', {
 
     openData: {
       endpointUrl: '/v2/currencies?ids=all',
-      connectionSucceeded: '',
       error: {},
       data: []
     },
     acct: {
       key: '',
       endpointUrl: '/v2/account/wallet?access_token=',
-      connectionSucceeded: '',
       error: {},
       data: []
     },
     acctDemo: {
-      connectionSucceeded: true,
       data: [
         {
           id: 1,
@@ -148,28 +145,27 @@ export const useWalletStore = defineStore('walletData', {
 
   getters: {
     getCurrencies: state => [...state.openData.data].sort((a, b) => a.order - b.order),
-    getAcctLen: state => {
-      if (state.acct.data.length > 0) return `${state.acct.data.length - 1} / `
-      return null
-    },
     getDemoLen: state => `${state.acctDemo.data.length - 1} / `,
     getDemo: state => state.acctDemo.data,
+    getAcctLen: state => {
+      console.log('sadl', state.acct.data.length)
+      if (state.acct.data.length > 0) return `${state.acct.data.length - 1} / `
+      return null
+    },   
   },
 
   actions: {
-    async callApiOpenData(type) {
+    async callApiOpenData() {
       const payload = await useAxiosGet(this.openData.endpointUrl)
-      // build for error
-      this.openData.connectionSucceeded = payload.connectionSucceeded
-      this.openData.error = { ...payload.error }
-      this.openData.data.push(...payload.data)
-
-      if (type === 'currencies' && payload.connectionSucceeded) {
+      if (payload.connectionSucceeded) {
+        this.openData.data.push(...payload.data)
         this.openData.data[0].coins = {
           copperIcon: 'https://render.guildwars2.com/file/6CF8F96A3299CFC75D5CC90617C3C70331A1EF0E/156902.png',
           silverIcon: 'https://render.guildwars2.com/file/E5A2197D78ECE4AE0349C8B3710D033D22DB0DA6/156907.png',
           goldIcon: 'https://render.guildwars2.com/file/090A980A96D39FD36FBB004903644C6DBEFB1FFB/156904.png',
         }
+      } else {
+         this.openData.error = { ...payload.error }
       }
     },
 
@@ -180,10 +176,9 @@ export const useWalletStore = defineStore('walletData', {
       this.clearCurrenciesAmounts()
       this.clearAcctData()
       const payload = await useAxiosGet(this.acct.endpointUrl + key)
-      this.acct.connectionSucceeded = payload.connectionSucceeded
       this.acct.error = { ...payload.error }
 
-      if (this.acct.connectionSucceeded) {
+      if (payload.connectionSucceeded) {
         this.acct.data.push(...payload.data)
         this.openData.data = matchAcctAmts(this.openData.data, this.acct.data)
       }
