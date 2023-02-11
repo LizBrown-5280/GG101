@@ -145,13 +145,10 @@ export const useWalletStore = defineStore('walletData', {
 
   getters: {
     getCurrencies: state => [...state.openData.data].sort((a, b) => a.order - b.order),
+    getAcctLen: state => state.acct.data.length > 0 ? `${state.acct.data.length - 1} / ` : null,
     getDemoLen: state => `${state.acctDemo.data.length - 1} / `,
     getDemo: state => state.acctDemo.data,
-    getAcctLen: state => {
-      console.log('sadl', state.acct.data.length)
-      if (state.acct.data.length > 0) return `${state.acct.data.length - 1} / `
-      return null
-    },   
+  
   },
 
   actions: {
