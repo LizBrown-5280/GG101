@@ -1,24 +1,28 @@
 <template>
-  <button :data-label="label" type="button">
-    <span><slot /></span>
+  <button :data-label="label" type="button" 
+    class="inline-block relative rounded px-2.5 py-1.5">
+    <slot />
+    <span v-if="label">
+      <slot name="label" />
+    </span>
   </button>
 </template>
 
 <script setup>
-const props = defineProps(['label'])
+const props = defineProps(['label', 'isShowing', 'w-full', 'h-1'])
 const label = props.label
 </script>
 
 <style scoped>
-  button {
-    position: relative;
-    display: inline-block;
-    margin: 0 3px;
-    padding: var(--vertical-padding) var(--horizontal-padding);
+button {
     border: 2px solid var(--color-util-primary2);
-    border-radius: 5px;
     background-color: var(--color-background-primary1);
     color: var(--color-text-primary3);
+    text-align: left;
+  }
+
+  .button.label {
+    text-align: center;
   }
 
   button.active, button:hover {
@@ -28,8 +32,8 @@ const label = props.label
     font-weight: bold;
   }
 
-  /* Part of what prevents button from shifting right on hover due to font-weight change */
-  button::before {
+  /* Next two are part of what prevents button from shifting right on hover due to font-weight change */
+  button.label::before {
     content: attr(data-label);
     font-weight: bold;
     visibility: hidden;

@@ -22,15 +22,20 @@
 
     <div class="buttons">
       <Gw2Button 
-        class="clearKey" value="clearKey" ref="clrBtn" label="Clear key"
-        @click="handleClearBtn">
+        class="clearKey label"  label="Clear key"
+        v-slot:label
+        value="clearKey" ref="clrBtn"
+        @click="handleClearBtn"
+      >
         Clear key
       </Gw2Button>
 
       <Gw2Button 
-        class="demoKey" :class="{ active: isDemoBtnActive}" label="Use Demo Key"
+        class="demoKey label" :class="{ active: isDemoBtnActive}" label="Use Demo Key"
+        v-slot:label
         title="Due to security concerns, the demo version does not make real API calls, it only uses stored data."
-        @click="toggleDemo">
+        @click="toggleDemo"
+      >
         Use Demo Key
       </Gw2Button>
     </div>
