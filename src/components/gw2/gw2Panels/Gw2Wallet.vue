@@ -1,7 +1,7 @@
 <template>
   <div id="wallet">
     <Gw2Transition name="slidedown-fade">
-      <Gw2Restricted v-if="permissionRestricted" type="Wallet"/>
+      <Gw2Restricted v-if="permissionRestricted" type="Wallet" class="content" />
     </Gw2Transition>
 
     <section class="gems mb-2.5">
