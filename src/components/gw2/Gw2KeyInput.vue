@@ -126,8 +126,8 @@
     padding: 20px 10px 0 0;
   }
 
-  .buttons {
-    margin-top: 2px;
+  .buttons button {
+    margin: 2px 2px 0;
   }
 
   label {

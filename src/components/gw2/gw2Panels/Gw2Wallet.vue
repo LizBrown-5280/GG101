@@ -1,14 +1,16 @@
 <template>
   <div id="wallet">
-    <div v-if="permissionsRestricted" class="restricted">
-      Permissions were not granted to access your Wallet with the key provided.
-      <br />
-      To see more, use a Permissions Key that includes access to your Wallet.
-    </div>
+    <Gw2Transition>
+      <Gw2Restricted  v-if="permissionRestricted" type="Wallet"/>
+    </Gw2Transition>
 
-    <div class="gems">
-      <button>Gems used in Black Lions Trading Post <span v-show="gems[0]?.name">(1)</span></button>
-      <section>
+    <section class="gems mb-2.5">
+      <Gw2Button @click="showGems = !showGems"  class="w-full h-auto" :class="{active: showGems}">
+        Gems used in Black Lions Trading Post <span v-show="gems[0]?.name">(1)</span>
+      </Gw2Button>
+
+      <Gw2Transition name="slidedown-fade">
+        <div v-show="showGems" class="content">
         <div class="row">
           <Gw2Card v-if="gems[0]?.id" :currency="gems[0]" />
 
@@ -18,12 +20,17 @@
         
           <div class="name">{{ gems[0]?.name }}<span v-show="gems[0]?.name">s</span></div>
         </div>
-      </section>
-    </div>
+        </div>
+      </Gw2Transition>
+    </section>
 
-    <div class="currencies">
-      <button>Currencies used in the game ({{ numOwned }}{{ currencies.length }}):</button>
-      <section>
+    <section class="currencies mb-2.5">
+      <Gw2Button @click="showCurrency = !showCurrency" class="w-full h-auto" :class="{active: showCurrency}">
+        Currencies used in the game ({{ numOwned }}{{ currencies.length }})
+      </Gw2Button>
+
+      <Gw2Transition name="slidedown-fade">
+        <div v-show="showCurrency" class="content">
         <div class="row" v-for="currency in currencies" :key="currency.id">
           <Gw2Card :currency="currency" />
 
@@ -40,25 +47,33 @@
     
           <div class="name">{{ currency.name }}</div>
         </div>
-      </section>
-    </div>
+        </div>
+      </Gw2Transition>
+    </section>
+
   </div>
 </template>
 
 <script setup>
   import Gw2Card from './Gw2Card.vue'
+  import Gw2Button from '../Gw2Button.vue'
+  import Gw2Restricted from './Gw2Restricted.vue'
+  import Gw2Transition from '../Gw2Transition.vue'
   import { ref, reactive, onMounted, watch } from 'vue'
   import { storeToRefs } from 'pinia'
   import { useGW2Store } from '@/stores/GW2'
   import { useWalletStore } from '@/stores/useWalletStore'
 
   const Gw2Store = useGW2Store()
+  const store = useWalletStore()
   const currencies = reactive([])
   const gems = reactive([])
   const { getApiKey } = storeToRefs(Gw2Store)
-  const permissionsRestricted = ref(false)
-  const store = useWalletStore()
+  const { getPermissions } = storeToRefs(Gw2Store)
+  const permissionRestricted = ref(false)
   const numOwned = ref(null)
+  const showGems = ref(true)
+  const showCurrency = ref(true)
 
   onMounted(async () => {
     if (store.getCurrencies.length === 0) {
@@ -66,6 +81,11 @@
       getCurrencies()
     } else getCurrencies()
   })
+
+  function getCurrencies() {
+    currencies.push(...store.getCurrencies)
+    gems.push(...currencies.splice(0, 1))
+  }
 
   watch(getApiKey, (newApiKey) => {
     if (newApiKey) getAcctData(newApiKey)
@@ -75,13 +95,10 @@
     }
   })
 
-  function getCurrencies() {
-    currencies.push(...store.getCurrencies)
-    gems.push(...currencies.splice(0, 1))
-  }
 
-  async function getAcctData(key) {
-    permissionsRestricted.value = false
+async function getAcctData(key) {
+    console.log('hahaha')
+    permissionRestricted.value = false
 
     // For Demo Data use only
     if (key.includes('DEMO-KEY')) {
@@ -92,13 +109,14 @@
 
     await store.callApiAcctData(key)
     numOwned.value = store.getAcctLen
+    permissionRestricted.value = false
   }
 </script>
 
 <style scoped>
-#wallet {
-    width: 600px;
+  #wallet {
     margin: 0 auto;
+    width: 600px;
   }
 
   #wallet > div {
