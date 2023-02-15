@@ -8,8 +8,9 @@ import axios from 'axios'
  */
 export function useAxiosGet (endPointUrl) {
   let payload = {}
+  const ver = '&v=latest'
 
-  return axios.get(endPointUrl)
+  return axios.get(endPointUrl + ver)
     .then(response => {
       payload.connectionSucceeded = true
       payload.data = response.data

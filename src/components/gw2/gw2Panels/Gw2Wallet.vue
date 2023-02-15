@@ -69,7 +69,6 @@
   const currencies = reactive([])
   const gems = reactive([])
   const { getApiKey } = storeToRefs(Gw2Store)
-  const { getPermissions } = storeToRefs(Gw2Store)
   const permissionRestricted = ref(false)
   const numOwned = ref(null)
   const showGems = ref(true)
