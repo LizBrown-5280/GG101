@@ -8,6 +8,7 @@
   --primary-brown: rgb(56, 36, 15);
   --primary-green: rgb(153, 179, 134);
   --primary-beige: rgb(195, 155, 94);
+  --primary-blue: rgb(163, 217, 255);
   --secondary-light-grey: rgb(154, 168, 179);
   --base-mid-blue: rgb(33, 50, 65);
   --base-dark-blue: rgb(3, 22, 38);
@@ -20,6 +21,7 @@
   --color-text-primary1: var(--primary-brown);
   --color-text-primary2: var(--primary-green);
   --color-text-primary3: var(--primary-beige);
+  --color-text-primary4: var(--primary-blue);
   --color-text-secondary1: var(--base-dark-blue);
   --color-text-secondary2: var(--base-mid-blue);
   --color-text-secondary3: var(--secondary-light-grey);
@@ -29,6 +31,7 @@
   --color-background-primary1: var(--primary-brown);
   --color-background-primary2: var(--primary-green);
   --color-background-primary3: var(--primary-beige);
+  --color-background-primary4: var(--primary-blue);
   --color-background-secondary1: var(--base-dark-blue);
   --color-background-secondary2: var(--base-mid-blue);
   --color-background-secondary3: var(--secondary-light-grey);
@@ -38,6 +41,7 @@
   --color-util-primary1: var(--primary-brown);
   --color-util-primary2: var(--primary-green);
   --color-util-primary3: var(--primary-beige);
+  --color-util-primary4: var(--primary-blue);
   --color-util-secondary1: var(--base-dark-blue);
   --color-util-secondary2: var(--base-mid-blue);
   --color-util-secondary3: var(--secondary-light-grey);
