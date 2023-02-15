@@ -15,7 +15,6 @@
           <ul>
             <li v-for="permission in permissions" :key="permission">{{ permission }}</li>
           </ul>
-          
         </div>
       </div>
     </div>
@@ -55,20 +54,17 @@
   const clrBtn = ref(null)
   const permissions = reactive([])
 
-  /**
-  * Note: 'Use Demo Key' does not use this func, hence the setting its active value to false
-  */
   function handleInputKeyChange() {
     handleClearingData()
     requestPermissions()
   }
 
-  async function requestPermissions() { 
+  async function requestPermissions() {
     await store.requestPermissionsList()
     permissions.push(...store.getAcctPermissions)
   }
 
-  function handleDevKeys(e) { 
+  function handleDevKeys(e) {
     userApiKey.value = e.target.value
     updateLabel()
     handleInputKeyChange()
@@ -118,7 +114,7 @@
 </script>
 
 <style scoped>
-  .key {
+.key {
     display: flex;
     align-items: center;
     justify-content: space-between;
