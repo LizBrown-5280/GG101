@@ -54,7 +54,6 @@ export const useGW2Store = defineStore('GW2Store', {
     getTabNav: state => state.tabNav,
     getApiKey: state => state.acct.key,
     getKeyErrorCode: state => state.acct.error.code,
-    // getAcctPermissions: state => state.acct.data.permissions,
     getAcctPermissions: state => [...state.acct.data.permissions].sort(),
     getDemoKey: state => state.demoData.key,
     getDemoPermissions: state => state.demoData.data.permissions,

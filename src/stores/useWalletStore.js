@@ -148,7 +148,6 @@ export const useWalletStore = defineStore('walletData', {
     getAcctLen: state => state.acct.data.length > 0 ? `${state.acct.data.length - 1} / ` : null,
     getDemoLen: state => `${state.acctDemo.data.length - 1} / `,
     getDemo: state => state.acctDemo.data,
-  
   },
 
   actions: {
