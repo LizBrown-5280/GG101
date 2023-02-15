@@ -20,5 +20,6 @@
   .slidedown-fade-enter-from,
   .slidedown-fade-leave-to {
     opacity: 0;
+    height: 0;
   }
 </style>

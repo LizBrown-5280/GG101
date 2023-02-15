@@ -1,7 +1,7 @@
 <template>
   <div id="wallet">
-    <Gw2Transition>
-      <Gw2Restricted  v-if="permissionRestricted" type="Wallet"/>
+    <Gw2Transition name="slidedown-fade">
+      <Gw2Restricted v-if="permissionRestricted" type="Wallet"/>
     </Gw2Transition>
 
     <section class="gems mb-2.5">
@@ -97,7 +97,6 @@
 
 
 async function getAcctData(key) {
-    console.log('hahaha')
     permissionRestricted.value = false
 
     // For Demo Data use only
@@ -109,7 +108,7 @@ async function getAcctData(key) {
 
     await store.callApiAcctData(key)
     numOwned.value = store.getAcctLen
-    permissionRestricted.value = false
+    permissionRestricted.value = numOwned.value ? false : true
   }
 </script>
 
@@ -125,6 +124,10 @@ async function getAcctData(key) {
   
   .restricted {
     color: var(--color-text-primary3)
+  }
+
+  .content {
+    height: 100%;
   }
   .row {
     position: relative;
