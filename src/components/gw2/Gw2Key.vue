@@ -13,6 +13,11 @@ import Gw2KeyInput from './Gw2KeyInput.vue'
 </script>
 
 <style scoped>
+p {
+  color: var(--color-text-primary4);
+  font-size: 1.4rem;
+  text-align: center;
+}
   a {
     color: var(--color-text-primary3)
   }
