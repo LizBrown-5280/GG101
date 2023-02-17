@@ -14,7 +14,7 @@ const label = props.label
 </script>
 
 <style scoped>
-button {
+  button {
     border: 2px solid var(--color-util-primary2);
     background-color: var(--color-background-primary1);
     color: var(--color-text-primary3);

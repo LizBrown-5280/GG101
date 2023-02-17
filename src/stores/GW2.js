@@ -18,40 +18,40 @@ export const useGW2Store = defineStore('GW2Store', {
       data: {
         permissions: [
           'account',
-          'builds',
+          // 'builds',
           'characters',
-          'guilds',
+          // 'guilds',
           'inventories',
-          'tradingpost',
+          // 'tradingpost',
           'progression',
-          'pvp',  
+          // 'pvp',
           'unlocks',
           'wallet',
-          ]
-        }
+        ]
+      }
     },
-    tabNav: {
-      account: {},
-      // builds: {},
-      characters: {},
-      // guilds: {},
-      inventories: {},
-      // tradingpost: {},
-      progression: {},
-      // pvp: {},
-      unlocks: {},
-      wallet: {}
-    },
+    activeTab: 'account',
+    panelTabs: [
+      'account',
+      // 'builds',
+      'characters',
+      // 'guilds',
+      'inventories',
+      // 'trading post',
+      'progressions',
+      // 'pvp',
+      'unlocks',
+      'wallet'
+    ],
 
     gw2: {
-      authData: {
-
-      },
+      authData: {},
     }
   }),
 
   getters: {
-    getTabNav: state => state.tabNav,
+    getPanelTabs: state => state.panelTabs,
+    getActiveTab: state => state.activeTab,
     getApiKey: state => state.acct.key,
     getKeyErrorCode: state => state.acct.error.code,
     getAcctPermissions: state => [...state.acct.data.permissions].sort(),
@@ -60,6 +60,9 @@ export const useGW2Store = defineStore('GW2Store', {
   },
 
   actions: {
+    storeActiveTab(activeTab) {
+      this.activeTab  = activeTab
+    },
     storeApiKey(userKey) {
       this.acct.key = userKey
     },
