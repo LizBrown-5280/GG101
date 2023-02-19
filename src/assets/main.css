@@ -13,7 +13,12 @@
   --base-mid-blue: rgb(33, 50, 65);
   --base-dark-blue: rgb(3, 22, 38);
   --primary-brown-opacity90: rgba(56, 36, 15, 0.9);
-  --error-red-med: #ff6767
+  --error-red-med: #ff6767;
+
+  /* colors from GW2 Wiki */
+  --rarity-ascended: #fb3e8d;
+  --rarity-masterwork: #1a9306;
+  --rarity-fine: #62A4DA;
 }
 
 /* semantic color variables for this project */
