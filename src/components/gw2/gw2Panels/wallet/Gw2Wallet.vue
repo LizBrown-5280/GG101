@@ -56,13 +56,13 @@
 
 <script setup>
   import Gw2Card from './Gw2Card.vue'
-  import Gw2Button from '../Gw2Button.vue'
-  import Gw2Restricted from './Gw2Restricted.vue'
-  import Gw2Transition from '../Gw2Transition.vue'
+  import Gw2Button from '../../Gw2Button.vue'
+  import Gw2Restricted from '../Gw2Restricted.vue'
+  import Gw2Transition from '../../Gw2Transition.vue'
   import { ref, reactive, onMounted, watch } from 'vue'
   import { storeToRefs } from 'pinia'
   import { useGW2Store } from '@/stores/GW2'
-  import { useWalletStore } from '@/stores/useWalletStore'
+  import { useWalletStore } from '@/stores/wallet'
 
   const Gw2Store = useGW2Store()
   const store = useWalletStore()
@@ -81,6 +81,8 @@
     } else getCurrencies()
   })
 
+  // ! could I have seperated gems in the store during the above call to get data and then instead of retrieving
+  // ! currency here, could I instead just use the getter directly in the template?
   function getCurrencies() {
     currencies.push(...store.getCurrencies)
     gems.push(...currencies.splice(0, 1))
@@ -94,8 +96,7 @@
     }
   })
 
-
-async function getAcctData(key) {
+ async function getAcctData(key) {
     permissionRestricted.value = false
 
     // For Demo Data use only

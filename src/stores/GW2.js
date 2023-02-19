@@ -30,17 +30,17 @@ export const useGW2Store = defineStore('GW2Store', {
         ]
       }
     },
-    activeTab: 'account',
+    // activeTab: 'account',
+    activeTab: 'heros',
     panelTabs: [
       'account',
       // 'builds',
-      'characters',
+      'heros',
       // 'guilds',
-      'inventories',
+      // 'inventories',
       // 'trading post',
-      'progressions',
+      // 'progressions',
       // 'pvp',
-      'unlocks',
       'wallet'
     ],
 
@@ -61,7 +61,7 @@ export const useGW2Store = defineStore('GW2Store', {
 
   actions: {
     storeActiveTab(activeTab) {
-      this.activeTab  = activeTab
+      if (this.activeTab !== activeTab) this.activeTab = activeTab
     },
     storeApiKey(userKey) {
       this.acct.key = userKey
