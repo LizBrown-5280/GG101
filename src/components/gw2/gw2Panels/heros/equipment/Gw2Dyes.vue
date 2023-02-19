@@ -3,13 +3,6 @@
 </template>
 
 <script setup>
-let a = 1
-console.log('a = ', a)
-
-function test() { 
-  a = 10
-  console.log('a = ', a)
-}
 
 </script>
 
