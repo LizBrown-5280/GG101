@@ -1,16 +1,15 @@
 <template>
- <div> <h2>Mail Carriers</h2></div>
+ <div><h2>Mail Carriers</h2></div>
+ <Gw2Display>
+ 
+ </Gw2Display>
 </template>
 
 <script setup>
-import { onMounted, reactive, watch } from 'vue'
-import { storeToRefs } from 'pinia';
-import { useGW2Store } from '@/stores/GW2'
+import { reactive, watch } from 'vue'
 import { useAxiosGet } from '@/composables/useAxiosGet'
+import Gw2Display from './Gw2Display.vue';
 
-
-const Gw2Store = useGW2Store()
-const { getApiKey } = storeToRefs(Gw2Store)
 const openDataEPUrl = '/v2/mailcarriers?ids=all'
 const acctDataEPUrl = '/v2/account/wallet?access_token='
 const permissionsRestricted =  false
@@ -32,11 +31,11 @@ const store = reactive({
 })
 
 watch(getApiKey, (newApiKey) => {
-  if (newApiKey) retrieveAcctData(newApiKey)
-  else {
-    //clear all acct related ui items
-  }
-})
+//   if (newApiKey) retrieveAcctData(newApiKey)
+//   else {
+//     //clear all acct related ui items
+//   }
+// })
 
 
 async function callApiOpenData() {

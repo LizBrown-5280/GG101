@@ -7,19 +7,19 @@
       <li>Mail Carriers (AB)</li>
     </ul>
 
-    <Gw2Dyes v-show="showUnlock === 'Dyes'" />
+    <!-- <Gw2Dyes v-show="showUnlock === 'Dyes'" />
     <Gw2Mounts v-show="showUnlock ==='Mounts'" />
     <Gw2Finishers v-show="showUnlock === 'Finishers'" />
-    <Gw2MailCarriers v-show="showUnlock === 'Mail Carriers'" />
+    <Gw2MailCarriers v-show="showUnlock === 'Mail Carriers'" /> -->
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
-import Gw2Dyes from './equipment/Gw2Dyes.vue';  
-import Gw2MailCarriers from './equipment/Gw2MailCarriers.vue';
-import Gw2Finishers from './equipment/Gw2Finishers.vue';
-import Gw2Mounts from './equipment/Gw2Mounts.vue';
+import Gw2Dyes from './Gw2Dyes.vue';  
+import Gw2MailCarriers from './Gw2MailCarriers.vue';
+import Gw2Finishers from './Gw2Finishers.vue';
+import Gw2Mounts from './Gw2Mounts.vue';
 
   const showUnlock = ref('Dyes')
 

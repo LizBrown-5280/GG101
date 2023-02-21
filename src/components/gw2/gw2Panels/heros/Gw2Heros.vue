@@ -26,7 +26,7 @@
 </template>
 
 <script setup>
-import Gw2Equipment from './Gw2Equipment.vue'
+import Gw2Equipment from './equipment/Gw2Equipment.vue'
 import { ref } from 'vue'
 
 const showHeroPanel = ref('E')

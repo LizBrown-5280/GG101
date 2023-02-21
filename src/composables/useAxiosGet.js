@@ -6,23 +6,22 @@ import axios from 'axios'
  * @returns a payload with data or an error msg
  * Note: In main.js --> axios.defaults.baseURL = 'https://api.guildwars2.com'
  */
-export function useAxiosGet (endPointUrl) {
+export async function useAxiosGet (endPointUrl, storeAs) {
   let payload = {}
-  const ver = '&v=latest'
-
-  return axios.get(endPointUrl + ver)
-    .then(response => {
-      payload.connectionSucceeded = true
-      payload.data = response.data
-      return payload
-    })
-    .catch(err => {
-      const e = err.toJSON()
-      payload.connectionSucceeded = false
-      payload.error = {
-        message: e.message,
-        code: e.status,
-      }
-      return payload
-    })
+  if (storeAs !== undefined) { payload.storeAs = storeAs }
+  
+  try {
+    const response = await axios.get(endPointUrl)
+    payload.connectionSucceeded = true
+    payload.data = response.data
+    return payload
+  } catch (err) {
+    const e = err.toJSON()
+    payload.connectionSucceeded = false
+    payload.error = {
+      message: e.message,
+      code: e.status,
+    }
+    return payload
+  }
 }
