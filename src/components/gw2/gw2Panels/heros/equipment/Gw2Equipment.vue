@@ -7,51 +7,53 @@
       <li>Mail Carriers (AB)</li>
     </ul>
 
-    <div class="panel" v-for="(item, key) in equipmentData" :key="key" >
+    <div class="panel" v-for="(item, key) in equipmentData" :key="key">
       <Gw2Display v-show="showEquipment === key" :equipment="item" />
     </div>
-
-
   </div>
 </template>
 
 <script setup>
-  import { ref, reactive } from 'vue'
-  import { prepareEndpointUrls } from '@/utils/utils.js'
-  import { useAxiosGet } from '@/composables/useAxiosGet'
-  import Gw2Display from './Gw2Display.vue';
-  const showEquipment = ref('')
-  const selectedEquipmentText = ref('')
-  const equipmentData = reactive({ })
+import { ref, reactive } from 'vue'
+import { prepareEndpointUrls } from '@/utils/utils.js'
+import { useAxiosGet } from '@/composables/useAxiosGet'
+import Gw2Display from './Gw2Display.vue'
 
-  function switchEquipmentPanels(e) {
-    selectedEquipmentText.value = e.target.innerText.includes(' (AB)')
-      ? e.target.innerText.slice(0, -5)
-      : e.target.innerText    
-    showEquipment.value = selectedEquipmentText.value.split(" ").join("").toLowerCase()
+const showEquipment = ref('')
+const selectedEquipmentText = ref('')
+const equipmentData = reactive({})
+
+function switchEquipmentPanels(e) {
+  selectedEquipmentText.value = e.target.innerText.includes(' (AB)')
+    ? e.target.innerText.slice(0, -5)
+    : e.target.innerText
+  showEquipment.value = selectedEquipmentText.value
+    .split(' ')
+    .join('')
+    .toLowerCase()
+}
+
+// During Create get all Open API data for the given list of endpoints
+// const endpoints = ['colors', 'finishers', 'gliders', 'mailcarriers', 'minis', 'mount/skins', 'mounts/types', 'novelties', 'outfits']
+const endpoints = ['mailcarriers', 'finisher', 'mounts/types']
+const endpointUrls = prepareEndpointUrls(endpoints, true)
+
+// const endpoints2 = ['skins']
+// const endpointUrls2 = prepareEndpointUrls(endpoints2, false)
+
+Promise.all(
+  endpointUrls.map((list) => useAxiosGet(list.endpointUrl, list.storeAs))
+).then((result) => {
+  for (let i = 0; i < result.length; i++) {
+    const storeAs = result[i].storeAs.endpointGrp
+    equipmentData[result[i].storeAs.endpointGrp] = {}
+
+    // if (result[i].connectionSucceeded) equipmentData[storeAs].data = result[i].data
+    if (result[i].connectionSucceeded) equipmentData[storeAs] = result[i]
+    else equipmentData[storeAs].error = result[i].error
   }
-
-  // During Create get all open API data for the given list of endpoints
-  // const endpoints = ['colors', 'finishers', 'gliders', 'mailcarriers', 'minis', 'mount/skins', 'mounts/types', 'novelties', 'outfits']
-  const endpoints = ['mailcarriers', 'finisher']
-  const endpointUrls = prepareEndpointUrls(endpoints, true)
-
-  // const endpoints2 = ['skins']
-  // const endpointUrls2 = prepareEndpointUrls(endpoints2, false)
-
-  Promise.all(endpointUrls.map(list => useAxiosGet(list.endpointUrl, list.storeAs))).then((result) => {
-    for (let i = 0; i < result.length; i++) {
-      const storeAs = result[i].storeAs.endpointGrp
-      equipmentData[result[i].storeAs.endpointGrp] = {}
-
-      // if (result[i].connectionSucceeded) equipmentData[storeAs].data = result[i].data
-      if (result[i].connectionSucceeded) equipmentData[storeAs] = result[i]
-      else equipmentData[storeAs].error = result[i].error
-    }
-    console.log('equipmentData', equipmentData);
-  })
-
-
+  console.log('equipmentData', equipmentData)
+})
 
 // const payload = await useAxiosGet(this.equipmentData.endpointUrl)
 // if (payload.connectionSucceeded) {
@@ -66,6 +68,4 @@
 // }
 
 // call axios with endpoints and store data.
-
-
 </script>
