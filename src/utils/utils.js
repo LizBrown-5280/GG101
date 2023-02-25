@@ -8,26 +8,21 @@
  *          along with thier matching icons
  */
 export function coinsExch(value) {
-  value = value.toString()
-
-  const coins = value.replace(/,/g, '')
-  const coinObj = {}
-
-  coinObj.copperIcon = 'https://render.guildwars2.com/file/6CF8F96A3299CFC75D5CC90617C3C70331A1EF0E/156902.png'
-  coinObj.copperCoins = coins.slice(-2)
-
-  let silverCoins = coins.slice(-4, -2)
-  let goldCoins = coins.slice(0, -4)
-
-  if (goldCoins > 0) {
-    coinObj.goldIcon = 'https://render.guildwars2.com/file/090A980A96D39FD36FBB004903644C6DBEFB1FFB/156904.png'
-    coinObj.goldCoins = goldCoins
+  const coinObj = {
+    copperCoins: '0',
+    silverCoins: '0',
+    goldCoins: '0',
+    copperIcon: 'https://render.guildwars2.com/file/6CF8F96A3299CFC75D5CC90617C3C70331A1EF0E/156902.png',
+    silverIcon: 'https://render.guildwars2.com/file/E5A2197D78ECE4AE0349C8B3710D033D22DB0DA6/156907.png',
+    goldIcon: 'https://render.guildwars2.com/file/090A980A96D39FD36FBB004903644C6DBEFB1FFB/156904.png',
   }
 
-  if (goldCoins > 0 || silverCoins > 0) {
-    coinObj.silverIcon = 'https://render.guildwars2.com/file/E5A2197D78ECE4AE0349C8B3710D033D22DB0DA6/156907.png'
-    coinObj.silverCoins = silverCoins
-  }
+  if (!value) return coinObj
+
+  const coins = value.toString().replace(/,/g, '')
+  coinObj.copperCoins = coins.slice(-2) || '0'
+  coinObj.silverCoins = coins.slice(-4, -2) || '0'
+  coinObj.goldCoins = coins.slice(0, -4) || '0'
 
   return coinObj
 }
@@ -37,7 +32,7 @@ export function coinsExch(value) {
  * @param {*} chunkSize the max number of ids, in CSV format, that can be requested at one time
  * @returns an array of string ids, with each string cataining no more than the chunkSize amount or 200
  */
-export function chunkList (list, chunkSize = 200) {
+export function chunkList(list, chunkSize = 200) {
   let chunkArr = []
 
   for (let i = 0; i < list.length; i += chunkSize) {
@@ -47,7 +42,7 @@ export function chunkList (list, chunkSize = 200) {
   return chunkArr
 }
 
-export function prepareEndpointUrls (endpoints, getAll = false) {
+export function prepareEndpointUrls(endpoints, getAll = false) {
   let endpointUrls = []
 
   // Setting up parts of URL
@@ -55,13 +50,16 @@ export function prepareEndpointUrls (endpoints, getAll = false) {
     const endpoint = endpoints[i]
     const param = getAll ? '?ids=all' : ''
 
-    endpointUrls.push({endpointUrl: '/v2/' + endpoint + param, storeAs: {dataType: 'openData', endpointGrp: endpoint}})
+    endpointUrls.push({
+      endpointUrl: '/v2/' + endpoint + param,
+      storeAs: { dataType: 'openData', endpointGrp: endpoint },
+    })
   }
 
   return endpointUrls
 }
 
-export function concatArrays (result, endpoint) {
+export function concatArrays(result, endpoint) {
   // Concat arrays with the same endpoint as the parameter, leaving all other arrays alone.
   // Concats into the first found matching endpoint using 'j' as 'first found index'
   let j
