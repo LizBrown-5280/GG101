@@ -3,11 +3,19 @@
 
   <div class="key">
     <div class="apiKeyInput">
-      <label :class="{ inset: isLabelInset }" for="userApiKey">To see more, enter your ArenaNet GW2 API key here...</label>
+      <label :class="{ inset: isLabelInset }" for="userApiKey"
+        >To see more, enter your ArenaNet GW2 API key here...</label
+      >
 
-      <input name="userApiKey" type="string" v-model.trim="userApiKey" @focus="isLabelInset = false"
-        @blur="isLabelInset = userApiKey ? false : true" @change="handleInputKeyChange" />
-      
+      <input
+        name="userApiKey"
+        type="string"
+        v-model.trim="userApiKey"
+        @focus="isLabelInset = false"
+        @blur="isLabelInset = userApiKey ? false : true"
+        @change="handleInputKeyChange"
+      />
+
       <div class="messages">
         <div v-if="store.getKeyErrorCode" class="errorMsg">Error: Please recheck the Permissions Key you provided.</div>
         <div v-if="permissions.length" class="permissions">
@@ -20,18 +28,22 @@
     </div>
 
     <div class="buttons">
-      <Gw2Button 
-        class="clearKey label"
-        label="Clear key" v-slot:label
-        value="clearKey" ref="clrBtn"
+      <Gw2Button
+        class="clearKey label text-xxs"
+        label="Clear key"
+        v-slot:label
+        value="clearKey"
+        ref="clrBtn"
         @click="handleClearBtn"
       >
         Clear key
       </Gw2Button>
 
-      <Gw2Button 
-        class="demoKey label" :class="{ active: isDemoBtnActive}" 
-        label="Use Demo Key" v-slot:label
+      <Gw2Button
+        class="demoKey label text-xxs"
+        :class="{ active: isDemoBtnActive }"
+        label="Use Demo Key"
+        v-slot:label
         title="Due to security concerns, the demo version does not make real API calls, it only uses stored data."
         @click="toggleDemo"
       >
@@ -87,14 +99,14 @@
     useStoreApiKey()
   }
 
-  function handleClearBtn() { 
+  function handleClearBtn() {
     userApiKey.value = ''
     handleClearingData()
   }
 
   function handleClearingData() {
     permissions.length = 0
-    udpateDemoBtnActive(false) 
+    udpateDemoBtnActive(false)
     updateLabel()
     useStoreApiKey()
     store.clearAcctData()
@@ -114,7 +126,7 @@
 </script>
 
 <style scoped>
-.key {
+  .key {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -138,14 +150,14 @@
     padding: 0 4px;
     background: var(--color-background-primary1);
     color: var(--color-text-primary2);
-    font-size: .7rem;
+    font-size: 0.7rem;
     transition: top 0.3s, font-size 0.3s, z-index 0.1s;
   }
 
   label.inset {
     z-index: -1;
     top: 26px;
-    font-size: .9rem;
+    font-size: 0.9rem;
     transition: top 0.3s, font-size 0.3s, z-index 0.1s;
   }
 
@@ -173,8 +185,8 @@
 
   .permissions {
     display: flex;
-    font-size: 0.70rem;
-    color: var(--color-text-primary2)
+    font-size: 0.7rem;
+    color: var(--color-text-primary2);
   }
 
   ul {
@@ -188,7 +200,7 @@
   }
 
   li:not(:last-child)::after {
-    content: ' - '
+    content: ' - ';
   }
 
   .errorMsg {
