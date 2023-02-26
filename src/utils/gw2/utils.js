@@ -42,17 +42,18 @@ export function chunkList(list, chunkSize = 200) {
   return chunkArr
 }
 
-export function prepareEndpointUrls(endpoints, getAll = false) {
+export function prepareEndpointUrls(endpoints) {
   let endpointUrls = []
 
   // Setting up parts of URL
   for (let i = 0; i < endpoints.length; i++) {
-    const endpoint = endpoints[i]
-    const param = getAll ? '?ids=all' : ''
+    const endpoint = endpoints[i].url
+    const param = endpoints[i].param || (endpoints[i].param === '' ? '' : 'ids=all')
+    const qm = param && '?'
 
     endpointUrls.push({
-      endpointUrl: '/v2/' + endpoint + param,
-      storeAs: { dataType: 'openData', endpointGrp: endpoint },
+      endpointUrl: '/v2/' + endpoint + qm + param,
+      storeAs: { dataType: 'openData', endpoint: endpoint, name: endpoints[i].name },
     })
   }
 

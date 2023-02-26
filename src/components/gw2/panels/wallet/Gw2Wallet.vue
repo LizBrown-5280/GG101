@@ -53,13 +53,13 @@
 
 <script setup>
   import Gw2Card from './Gw2Card.vue'
-  import Gw2Button from '../../Gw2Button.vue'
-  import Gw2Restricted from '../Gw2Restricted.vue'
-  import Gw2Transition from '../../Gw2Transition.vue'
+  import Gw2Button from '@/components/gw2/utilsComponents/Gw2Button.vue'
+  import Gw2Restricted from '@/components/gw2/utilsComponents/Gw2Restricted.vue'
+  import Gw2Transition from '@/components/gw2/utilsComponents/Gw2Transition.vue'
   import { ref, reactive, onMounted, watch } from 'vue'
   import { storeToRefs } from 'pinia'
-  import { useGW2Store } from '@/stores/GW2'
-  import { useWalletStore } from '@/stores/wallet'
+  import { useGW2Store } from '@/stores/gw2/store'
+  import { useWalletStore } from '@/stores/gw2/wallet'
 
   const Gw2Store = useGW2Store()
   const store = useWalletStore()

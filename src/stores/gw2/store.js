@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { useAxiosGet } from '@/composables/useAxiosGet'
+import { useAxiosGet } from '@/composables/gw2/useAxiosGet'
 
 export const useGW2Store = defineStore('GW2Store', {
   state: () => ({
@@ -9,7 +9,7 @@ export const useGW2Store = defineStore('GW2Store', {
       endpointUrl: '/v2/tokeninfo?access_token=',
       connectionSucceeded: '',
       error: {},
-      data: {}
+      data: {},
     },
     demoData: {
       connectionSucceeded: true,
@@ -27,8 +27,8 @@ export const useGW2Store = defineStore('GW2Store', {
           // 'pvp',
           'unlocks',
           'wallet',
-        ]
-      }
+        ],
+      },
     },
     // activeTab: 'account',
     activeTab: 'heros',
@@ -41,22 +41,22 @@ export const useGW2Store = defineStore('GW2Store', {
       // 'trading post',
       // 'progressions',
       // 'pvp',
-      'wallet'
+      'wallet',
     ],
 
     gw2: {
       authData: {},
-    }
+    },
   }),
 
   getters: {
-    getPanelTabs: state => state.panelTabs,
-    getActiveTab: state => state.activeTab,
-    getApiKey: state => state.acct.key,
-    getKeyErrorCode: state => state.acct.error.code,
-    getAcctPermissions: state => [...state.acct.data.permissions].sort(),
-    getDemoKey: state => state.demoData.key,
-    getDemoPermissions: state => state.demoData.data.permissions,
+    getPanelTabs: (state) => state.panelTabs,
+    getActiveTab: (state) => state.activeTab,
+    getApiKey: (state) => state.acct.key,
+    getKeyErrorCode: (state) => state.acct.error.code,
+    getAcctPermissions: (state) => [...state.acct.data.permissions].sort(),
+    getDemoKey: (state) => state.demoData.key,
+    getDemoPermissions: (state) => state.demoData.data.permissions,
   },
 
   actions: {
@@ -88,5 +88,5 @@ export const useGW2Store = defineStore('GW2Store', {
       this.acct.error.message = null
       this.acct.error.code = null
     },
-  }
+  },
 })

@@ -55,8 +55,8 @@
 
 <script setup>
   import { ref, reactive } from 'vue'
-  import { useGW2Store } from '@/stores/GW2'
-  import Gw2Button from './Gw2Button.vue'
+  import { useGW2Store } from '@/stores/gw2/store'
+  import Gw2Button from '@/components/gw2/utilsComponents/Gw2Button.vue'
   import Gw2DevKeys from './Gw2DevKeys.vue'
   const useDevKeys = import.meta.env.VITE_DEV_KEYS
   const store = useGW2Store()

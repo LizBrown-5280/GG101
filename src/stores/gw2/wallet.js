@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
-import { coinsExch } from '@/utils/utils.js'
-import { useAxiosGet } from '@/composables/useAxiosGet'
+import { coinsExch } from '@/utils/gw2/utils.js'
+import { useAxiosGet } from '@/composables/gw2/useAxiosGet'
 
 export const useWalletStore = defineStore('walletData', {
   state: () => ({
@@ -9,145 +9,145 @@ export const useWalletStore = defineStore('walletData', {
     openData: {
       endpointUrl: '/v2/currencies?ids=all',
       error: {},
-      data: []
+      data: [],
     },
     acct: {
       key: '',
       endpointUrl: '/v2/account/wallet?access_token=',
       error: {},
-      data: []
+      data: [],
     },
     acctDemo: {
       data: [
         {
           id: 1,
-          value: 1111111
+          value: 1111111,
         },
         {
           id: 2,
-          value: 555555
+          value: 555555,
         },
         {
           id: 3,
-          value: 315
+          value: 315,
         },
         {
           id: 4,
-          value: 8888
+          value: 8888,
         },
         {
           id: 7,
-          value: 15
+          value: 15,
         },
         {
           id: 9,
-          value: 60
+          value: 60,
         },
         {
           id: 11,
-          value: 1
+          value: 1,
         },
         {
           id: 13,
-          value: 63
+          value: 63,
         },
         {
           id: 15,
-          value: 2204
+          value: 2204,
         },
         {
           id: 16,
-          value: 5
+          value: 5,
         },
         {
           id: 18,
-          value: 168
+          value: 168,
         },
         {
           id: 19,
-          value: 8003
+          value: 8003,
         },
         {
           id: 20,
-          value: 696
+          value: 696,
         },
         {
           id: 22,
-          value: 1100
+          value: 1100,
         },
         {
           id: 23,
-          value: 1286
+          value: 1286,
         },
         {
           id: 25,
-          value: 498
+          value: 498,
         },
         {
           id: 27,
-          value: 1970
+          value: 1970,
         },
         {
           id: 32,
-          value: 6978
+          value: 6978,
         },
         {
           id: 34,
-          value: 1413
+          value: 1413,
         },
         {
           id: 35,
-          value: 60
+          value: 60,
         },
         {
           id: 37,
-          value: 175
+          value: 175,
         },
         {
           id: 38,
-          value: 12
+          value: 12,
         },
         {
           id: 40,
-          value: 81
+          value: 81,
         },
         {
           id: 41,
-          value: 51
+          value: 51,
         },
         {
           id: 42,
-          value: 22
+          value: 22,
         },
         {
           id: 43,
-          value: 5
+          value: 5,
         },
         {
           id: 44,
-          value: 9
+          value: 9,
         },
         {
           id: 45,
-          value: 2400
+          value: 2400,
         },
         {
           id: 47,
-          value: 1
+          value: 1,
         },
-         {
+        {
           id: 62,
-          value: 555
-        }
+          value: 555,
+        },
       ],
     },
   }),
 
   getters: {
-    getCurrencies: state => [...state.openData.data].sort((a, b) => a.order - b.order),
-    getAcctLen: state => state.acct.data.length > 0 ? `${state.acct.data.length - 1} / ` : null,
-    getDemoLen: state => `${state.acctDemo.data.length - 1} / `,
-    getDemo: state => state.acctDemo.data,
+    getCurrencies: (state) => [...state.openData.data].sort((a, b) => a.order - b.order),
+    getAcctLen: (state) => (state.acct.data.length > 0 ? `${state.acct.data.length - 1} / ` : null),
+    getDemoLen: (state) => `${state.acctDemo.data.length - 1} / `,
+    getDemo: (state) => state.acctDemo.data,
   },
 
   actions: {
@@ -161,7 +161,7 @@ export const useWalletStore = defineStore('walletData', {
           goldIcon: 'https://render.guildwars2.com/file/090A980A96D39FD36FBB004903644C6DBEFB1FFB/156904.png',
         }
       } else {
-         this.openData.error = { ...payload.error }
+        this.openData.error = { ...payload.error }
       }
     },
 
@@ -188,7 +188,7 @@ export const useWalletStore = defineStore('walletData', {
 
     clearCurrenciesAmounts() {
       let len = this.openData.data.length
-      for (let i = 0; i < len; i++) this.openData.data[i].amount = null 
+      for (let i = 0; i < len; i++) this.openData.data[i].amount = null
       this.openData.data[0].coins.copperCoins = null
       this.openData.data[0].coins.silverCoins = null
       this.openData.data[0].coins.goldCoins = null
@@ -196,18 +196,17 @@ export const useWalletStore = defineStore('walletData', {
 
     clearAcctData() {
       this.acct.data.length = 0
-    }
+    },
   },
 })
 
 function matchAcctAmts(currencies, acctData) {
   acctData = JSON.parse(JSON.stringify(acctData))
-  currencies.forEach(currency => { 
+  currencies.forEach((currency) => {
     if (currency.id === acctData[0]?.id) {
       currency.amount = acctData[0].value.toLocaleString()
       acctData.shift()
-    }
-    else currency.amount = '0'
+    } else currency.amount = '0'
   })
 
   currencies[0].coins = coinsExch(currencies[0].amount)
