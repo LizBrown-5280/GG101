@@ -1,5 +1,5 @@
 <template>
-  <button :data-label="label" type="button" class="inline-block relative rounded px-2.5 py-1.5">
+  <button :data-label="label" type="button">
     <slot />
     <span v-if="label">
       <slot name="label" />
@@ -14,14 +14,13 @@
 
 <style scoped>
   button {
+    position: relative;
+    display: inline-block;
     border: 2px solid var(--color-util-primary2);
+    border-radius: 4px;
+    padding: 0.375rem 0.625rem;
     background-color: var(--color-background-primary1);
     color: var(--color-text-primary3);
-    text-align: left;
-  }
-
-  .button.label {
-    text-align: center;
   }
 
   button.active,
@@ -29,21 +28,43 @@
     border: 2px solid var(--color-util-primary3);
     background-color: var(--color-background-primary2);
     color: var(--color-text-primary1);
+  }
+
+  /* Prevents button text from shifting right on hover due to non-fixed width & font-weight change */
+  button.label.active span,
+  button.label:hover span {
     font-weight: bold;
   }
 
-  /* Next two are part of what prevents button from shifting right on hover due to font-weight change */
   button.label::before {
     content: attr(data-label);
     font-weight: bold;
     visibility: hidden;
   }
 
-  span {
+  button.label span {
     position: absolute;
     top: var(--vertical-padding);
     bottom: var(--vertical-padding);
     left: var(--horizontal-padding);
     right: var(--horizontal-padding);
+  }
+
+  /* Tabs */
+  button.tab {
+    width: 90px;
+    height: 42px;
+    border-bottom: 0px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    font-size: 0.8rem;
+    text-transform: capitalize;
+  }
+
+  /* Dropdown Bar (for panels) */
+  button.dropdownBar {
+    width: 100%;
+    height: auto;
+    font-size: 18px;
   }
 </style>

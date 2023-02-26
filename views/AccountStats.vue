@@ -22,7 +22,7 @@
 
 <style scoped>
   .gw2 {
-    z-index: 10;
+    z-index: 20;
     position: relative;
     margin: 0 auto 50px;
     width: 1020px;

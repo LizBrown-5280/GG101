@@ -5,7 +5,7 @@
     </Gw2Transition>
 
     <section class="gems mb-2.5">
-      <Gw2Button @click="showGems = !showGems" class="w-full h-auto text-lg" :class="{ active: showGems }">
+      <Gw2Button @click="showGems = !showGems" class="dropdownBar" :class="{ active: showGems }">
         Gems used in Black Lions Trading Post <span v-show="gems[0]?.name">(1)</span>
       </Gw2Button>
 
@@ -23,7 +23,7 @@
     </section>
 
     <section class="currencies mb-2.5">
-      <Gw2Button @click="showCurrency = !showCurrency" class="w-full h-auto text-lg" :class="{ active: showCurrency }">
+      <Gw2Button @click="showCurrency = !showCurrency" class="dropdownBar" :class="{ active: showCurrency }">
         Currencies used in the game ({{ numOwned }}{{ currencies.length }})
       </Gw2Button>
 

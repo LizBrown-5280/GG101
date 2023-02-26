@@ -29,7 +29,7 @@
 
     <div class="buttons">
       <Gw2Button
-        class="clearKey label text-xxs"
+        class="clearKey label text-xxs button"
         label="Clear key"
         v-slot:label
         value="clearKey"
@@ -40,7 +40,7 @@
       </Gw2Button>
 
       <Gw2Button
-        class="demoKey label text-xxs"
+        class="demoKey label text-xxs button"
         :class="{ active: isDemoBtnActive }"
         label="Use Demo Key"
         v-slot:label
