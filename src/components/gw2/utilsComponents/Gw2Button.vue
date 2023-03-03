@@ -36,13 +36,13 @@
     font-weight: bold;
   }
 
-  button.label::before {
+  .label::before {
     content: attr(data-label);
     font-weight: bold;
     visibility: hidden;
   }
 
-  button.label span {
+  .label span {
     position: absolute;
     top: var(--vertical-padding);
     bottom: var(--vertical-padding);
@@ -51,7 +51,7 @@
   }
 
   /* Tabs */
-  button.tab {
+  .tab {
     width: 90px;
     height: 42px;
     border-bottom: 0px;
@@ -61,8 +61,14 @@
     text-transform: capitalize;
   }
 
+  /* clickables */
+  .clickables {
+    width: 120px;
+    height: 40px;
+    border: 0 solid transparent;
+  }
   /* Dropdown Bar (for panels) */
-  button.dropdownBar {
+  .dropdownBar {
     width: 100%;
     height: auto;
     font-size: 18px;

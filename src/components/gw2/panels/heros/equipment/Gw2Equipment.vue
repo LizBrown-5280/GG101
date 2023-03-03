@@ -1,32 +1,12 @@
 <template>
-  <div id="equipment" class="equipment row column">
-    <section v-for="(equiment, key) in equipmentData" :key="key" class="">
-      <Gw2Button>
+  <div id="equipment" class="equipment">
+    <div class="buttons">
+      <Gw2Button v-for="(equiment, key) in equipmentData" :key="key" class="clickables">
         {{ key }}
       </Gw2Button>
-
-      <Gw2Transition name="slidedown-fade">
-        <div v-show="true" class="content">
-          <!--  <div class="row" v-for="currency in currencies" :key="currency.id">
-            <Gw2Card :currency="currency" />
-
-            <div class="amount">
-              <div v-if="currency.id !== 1" class="amount">
-                {{ currency.amount }} <img :src="currency.icon" :title="currency.name" />
-              </div>
-              <div v-else class="amount">
-                {{ currency.coins.goldCoins }}<img :src="currency.coins.goldIcon" title="Gold" />
-                {{ currency.coins.silverCoins }}<img :src="currency.coins.silverIcon" title="Silver" />
-                {{ currency.coins.copperCoins }}<img :src="currency.coins.copperIcon" title="Copper" />
-              </div>
-            </div>
-
-            <div class="name">{{ currency.name }}</div>
-          </div>-->
-        </div>
-      </Gw2Transition>
-    </section>
+    </div>
   </div>
+  <div class="panel"></div>
 </template>
 
 <script setup>
@@ -38,7 +18,6 @@
 
   const showEquipment = ref('')
   const selectedEquipmentText = ref('')
-  // const equipment = ['Color', 'Finisher', 'Glider', 'Mail Carriers', 'Minis', 'Mounts', 'Novelties']
   const equipmentData = reactive({
     Color: {},
     Mounts: {},
@@ -101,3 +80,10 @@
 
   // call axios with endpoints and store data.
 </script>
+
+<style scoped>
+  .buttons {
+    display: flex;
+    flex-direction: column;
+  }
+</style>
